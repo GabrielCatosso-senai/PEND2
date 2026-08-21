@@ -27,11 +27,33 @@ class Produto {
     }
 }
 
-const produtos = [];
+// Array de produtos
+let produtos = [];
 
+// Elementos do HTML
 const formulario = document.getElementById("formProduto");
 const produtosCadastrados = document.getElementById("produtosCadastrados");
 
+// Função para salvar no localStorage
+function salvarNoLocalStorage() {
+    localStorage.setItem("produtos", JSON.stringify(produtos));
+}
+
+// Função para carregar do localStorage
+function carregarDoLocalStorage() {
+    const produtosSalvos = localStorage.getItem("produtos");
+
+    if (produtosSalvos) {
+        // Transforma o JSON de volta em objetos da classe Produto
+        const produtosParseados = JSON.parse(produtosSalvos);
+
+        produtos = produtosParseados.map(function(item) {
+            return new Produto(item.nome, item.preco, item.categoria, item.desconto);
+        });
+    }
+}
+
+// Função que atualiza a lista na tela
 function atualizarLista() {
     produtosCadastrados.innerHTML = "";
 
@@ -40,11 +62,14 @@ function atualizarLista() {
     });
 }
 
+// Função para excluir produto
 function excluirProduto(indice) {
     produtos.splice(indice, 1);
+    salvarNoLocalStorage(); // atualiza o localStorage
     atualizarLista();
 }
 
+// Evento de cadastrar
 formulario.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -56,13 +81,19 @@ formulario.addEventListener("submit", function(event) {
     const produto = new Produto(nome, preco, categoria, desconto);
     produtos.push(produto);
 
+    salvarNoLocalStorage(); // salva no localStorage
     atualizarLista();
     formulario.reset();
 });
 
+// Evento de excluir
 produtosCadastrados.addEventListener("click", function(event) {
     if (event.target.classList.contains("btn-excluir")) {
         const indice = Number(event.target.getAttribute("data-indice"));
         excluirProduto(indice);
     }
 });
+
+// Quando a página abrir, carrega os produtos salvos
+carregarDoLocalStorage();
+atualizarLista();

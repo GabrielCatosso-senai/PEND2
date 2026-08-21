@@ -38,6 +38,7 @@ document.getElementById('formProduto').addEventListener('submit', function(event
     const preco = parseFloat(document.getElementById('preco').value);
     const categoria = document.getElementById('categoria').value;
     const desconto = parseFloat(document.getElementById('desconto').value);
+   
 
     // Cria o objeto da classe Produto
     const produto = new Produto(nome, preco, categoria, desconto);
@@ -45,9 +46,25 @@ document.getElementById('formProduto').addEventListener('submit', function(event
     // Aplica o desconto
     produto.aplicarDesconto();
 
+    localStorage.setItem("produto", JSON.stringify(produto));
+
+
     // Exibe o produto
     produto.exibir();
 
     // Limpa o formulário (opcional)
     this.reset();
+    const dados = localStorage.getItem("produto");
+
+    if (dados) {
+
+        const produtoSalvo = JSON.parse(dados);
+        const produtoRecuperado = new Produto(
+            produtoSalvo.nome,
+            produtoSalvo.preco,
+            produtoSalvo.categoria,
+            produtoSalvo.desconto
+);
+produto.exibir();
+    }
 });
