@@ -23,7 +23,7 @@ class Produto {
             <p><strong>Nome:</strong> ${this.nome}</p>
             <p><strong>Categoria:</strong> ${this.categoria}</p>
             <p><strong>Preço original:</strong> R$ ${this.preco.toFixed(2)}</p>
-            <p><strong>Desconto:</strong> ${this.desconto}%</p>
+            <p><strong>Desconto:</strong> ${this.desconto}</p>
             <p><strong>Preço com desconto:</strong> R$ ${this.precoFinal.toFixed(2)}</p>
         `;
     }
