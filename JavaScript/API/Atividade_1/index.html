@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registro de Visita Técnica</title>
 </head>
 <body>
-    
+    <h1>Registro de Visita Técnica</h1>
+
+    <h2>Dados de Geolocalização</h2>
+    <p>Latitude: <span id="latitude">—</span></p>
+    <p>Longitude: <span id="longitude">—</span></p>
+    <p>Precisão: <span id="precisao">—</span></p>
+
+    <button id="btnLocalizacao">Obter Localização</button>
+
+    <h2>Câmera</h2>
+    <video id="camera" width="320" height="240" autoplay playsinline></video>
+    <br>
+    <button id="btnCamera">Abrir Câmera</button>
+
+    <p id="mensagem"></p>
+
+    <script src="script.js"></script>
 </body>
 </html>
