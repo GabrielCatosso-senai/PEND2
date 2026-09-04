@@ -6,8 +6,8 @@
 
 body {
     font-family: system-ui, -apple-system, sans-serif;
-    background: #514343;
-    color: #bb4242;
+    background: #3a2e2e;
+    color: #4ff049;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -55,7 +55,7 @@ h1 {
 }
 
 .casa.escura {
-    background: #dfc8b2;
+    background: #7b6f64;
 }
 
 .casa.destacada {
