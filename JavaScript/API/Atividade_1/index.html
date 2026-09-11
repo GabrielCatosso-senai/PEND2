@@ -3,24 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Visita Técnica</title>
+    <title>Captura de Câmera e Geolocalização</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Registro de Visita Técnica</h1>
 
-    <h2>Dados de Geolocalização</h2>
-    <p>Latitude: <span id="latitude">—</span></p>
-    <p>Longitude: <span id="longitude">—</span></p>
-    <p>Precisão: <span id="precisao">—</span></p>
+    <div class="container">
+        <h1>Painel de Controle</h1>
 
-    <button id="btnLocalizacao">Obter Localização</button>
+        <div id="mensagem" class="status-msg">Aguardando ação...</div>
 
-    <h2>Câmera</h2>
-    <video id="camera" width="320" height="240" autoplay playsinline></video>
-    <br>
-    <button id="btnCamera">Abrir Câmera</button>
+        
+        <section class="card">
+            <h2><span class="icon"></span> Localização</h2>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Latitude:</span>
+                    <span id="latitude" class="value">--</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Longitude:</span>
+                    <span id="longitude" class="value">--</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Precisão:</span>
+                    <span id="precisao" class="value">--</span>
+                </div>
+            </div>
 
-    <p id="mensagem"></p>
+            <div class="status-icon-container">
+                <img id="statusImg" src="" alt="Status" class="status-img" style="display: none;">
+            </div>
+
+            <button id="btnLocalizacao" class="btn primary">Obter Localização</button>
+        </section>
+
+       
+        <section class="card">
+            <h2><span class="icon"></span> Câmera e Foto</h2>
+
+            <div class="media-container">
+               
+                <div class="video-wrapper">
+                    <video id="camera" autoplay playsinline muted></video>
+                </div>
+
+                <div class="preview-wrapper">
+                    <img id="fotoCapturada" alt="Foto capturada" style="display: none;" />
+                </div>
+            </div>
+
+            
+            <canvas id="canvasFoto" style="display: none;"></canvas>
+
+            <div class="button-group">
+                <button id="btnCamera" class="btn success">Ativar Câmera</button>
+                <button id="btnTirarFoto" class="btn warning" disabled>Capturar Foto</button>
+                <button id="btnBaixarFoto" class="btn outline" style="display: none;" disabled>Baixar Foto</button>
+            </div>
+        </section>
+    </div>
 
     <script src="script.js"></script>
 </body>
