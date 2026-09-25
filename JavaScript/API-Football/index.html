@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futebol Info - Consumo de API</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>⚽ Futebol Stats Hub</h1>
+    <p>Consulte dados e informações sobre seus times de futebol preferidos.</p>
+  </header>
+
+  <main class="container">
+    
+    <section class="search-section">
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="teamInput" 
+          placeholder="Digite o nome do time (ex: Arsenal, Flamengo)..." 
+          aria-label="Nome do time"
+        />
+        <button id="searchBtn">Buscar Time</button>
+      </div>
+    </section>
+
+    
+    <div id="loading" class="hidden">
+      <div class="spinner"></div>
+      <p>Buscando dados na API...</p>
+    </div>
+
+    <div id="errorMessage" class="error-box hidden"></div>
+
+  
+    <section id="resultsContainer" class="results-grid"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
