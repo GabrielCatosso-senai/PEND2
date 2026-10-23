@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mercado H - Seu Mercado Completo Online</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        padding-top: 70px;
+      }
+
+      .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover .card-img-top {
+        transform: scale(1.03);
+      }
+
+      .card {
+        overflow: hidden;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+      }
+
+      .hero-carousel-img {
+        height: 480px;
+        object-fit: cover;
+        filter: brightness(0.65);
+      }
+
+      .carousel-caption {
+        bottom: 20%;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1080;
+      }
+
+      .toast-container {
+        z-index: 1090;
+      }
+    </style>
+
+    <script>
+      (() => {
+        'use strict'
+        const getStoredTheme = () => localStorage.getItem('theme')
+        const setStoredTheme = theme => localStorage.setItem('theme', theme)
+
+        const getPreferredTheme = () => {
+          const storedTheme = getStoredTheme()
+          if (storedTheme) {
+            return storedTheme
+          }
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+
+        const setTheme = theme => {
+          if (theme === 'auto') {
+            document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+          } else {
+            document.documentElement.setAttribute('data-bs-theme', theme)
+          }
+        }
+
+        setTheme(getPreferredTheme())
+
+        const showActiveTheme = (theme) => {
+          const themeSwitcher = document.querySelector('#bd-theme')
+          if (!themeSwitcher) return
+
+          document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
+            element.classList.remove('active')
+            element.setAttribute('aria-pressed', 'false')
+          })
+
+          const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
+          if (btnToActive) {
+            btnToActive.classList.add('active')
+            btnToActive.setAttribute('aria-pressed', 'true')
+          }
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+          const storedTheme = getStoredTheme()
+          if (storedTheme !== 'light' && storedTheme !== 'dark') {
+            setTheme(getPreferredTheme())
+          }
+        })
+
+        window.addEventListener('DOMContentLoaded', () => {
+          showActiveTheme(getPreferredTheme())
+
+          document.querySelectorAll('[data-bs-theme-value]').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+              const theme = toggle.getAttribute('data-bs-theme-value')
+              setStoredTheme(theme)
+              setTheme(theme)
+              showActiveTheme(theme)
+            })
+          })
+        })
+      })()
+    </script>
+  </head>
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+        <div class="container">
+          <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-warning" href="#inicio">
+            <i class="bi bi-cart3 fs-3 text-warning"></i>
+            <span>Mercado H</span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+              <li class="nav-item">
+                <a class="nav-link active fw-semibold" aria-current="page" href="#inicio">
+                  <i class="bi bi-house-door me-1"></i>Início
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-semibold" href="#produtos">
+                  <i class="bi bi-bag me-1"></i>Produtos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-semibold" href="#contato">
+                  <i class="bi bi-envelope me-1"></i>Contato
+                </a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn btn-outline-warning position-relative" type="button" data-bs-toggle="modal" data-bs-target="#cartModal">
+                <i class="bi bi-cart-fill me-1"></i> Carrinho
+                <span id="cartBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  0
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="inicio" class="mb-5">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+              <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1600&q=80" class="d-block w-100 hero-carousel-img" alt="Hortifruti Fresco" onerror="this.src='https://placehold.co/1600x600/15803d/ffffff?text=Mercado+H+-+Produtos+Frescos'">
+              <div class="carousel-caption d-none d-md-block text-start container">
+                <span class="badge bg-warning text-dark fs-6 px-3 py-2 mb-2">Ofertas da Semana</span>
+                <h1 class="display-4 fw-bold text-white">Bem-vindo ao Mercado H</h1>
+                <p class="lead text-light">Produtos frescos, selecionados e com os melhores preços para a sua família.</p>
+                <a href="#produtos" class="btn btn-warning btn-lg fw-bold px-4 shadow">
+                  <i class="bi bi-shop me-2"></i>Ver Produtos
+                </a>
+              </div>
+            </div>
+
+            <div class="carousel-item" data-bs-interval="5000">
+              <img src="https://images.unsplash.com/photo-1534723452862-4c874180d2fc?auto=format&fit=crop&w=1600&q=80" class="d-block w-100 hero-carousel-img" alt="Corredor do Supermercado" onerror="this.src='https://placehold.co/1600x600/1d4ed8/ffffff?text=Mercado+H+-+Descontos+Exclusivos'">
+              <div class="carousel-caption d-none d-md-block text-start container">
+                <h2 class="display-4 fw-bold text-white">Sua Despensa Sempre Cheia</h2>
+                <a href="#produtos" class="btn btn-primary btn-lg fw-bold px-4 shadow">
+                  <i class="bi bi-cart-check me-2"></i>Aproveitar Ofertas
+                </a>
+              </div>
+            </div>
+
+            <div class="carousel-item" data-bs-interval="5000">
+              <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1600&q=80" class="d-block w-100 hero-carousel-img" alt="Alimentos Essenciais" onerror="this.src='https://placehold.co/1600x600/b91c1c/ffffff?text=Mercado+H+-+Qualidade+Garantida'">
+              <div class="carousel-caption d-none d-md-block text-start container">
+                <span class="badge bg-success fs-6 px-3 py-2 mb-2">Qualidade Premium</span>
+                <h2 class="display-4 fw-bold text-white">Ingredientes Essenciais</h2>
+                <p class="lead text-light">Do café da manhã ao jantar, tudo com garantia de procedência e frescor.</p>
+                <a href="#produtos" class="btn btn-success btn-lg fw-bold px-4 shadow">
+                  <i class="bi bi-bag-check me-2"></i>Ir às Compras
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+          </button>
+        </div>
+
+        <div class="container mt-5">
+          <div class="row g-4 text-center">
+            <div class="col-md-4">
+              <div class="p-4 border rounded-4 bg-body-tertiary h-100 shadow-sm">
+                <i class="bi bi-truck fs-1 text-primary mb-2"></i>
+                <h5 class="fw-bold">Entrega Rápida</h5>
+                <p class="text-body-secondary mb-0">Receba suas compras no conforto de casa em até 24 horas.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-4 border rounded-4 bg-body-tertiary h-100 shadow-sm">
+                <i class="bi bi-shield-check fs-1 text-success mb-2"></i>
+                <h5 class="fw-bold">Qualidade Garantida</h5>
+                <p class="text-body-secondary mb-0">Produtos rigorosamente selecionados para a sua família.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="p-4 border rounded-4 bg-body-tertiary h-100 shadow-sm">
+                <i class="bi bi-percent fs-1 text-danger mb-2"></i>
+                <h5 class="fw-bold">Melhores Preços</h5>
+                <p class="text-body-secondary mb-0">Ofertas diárias e descontos imperdíveis na cesta básica.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="produtos" class="py-5 bg-body-tertiary">
+        <div class="container">
+          
+          <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-body-emphasis">Nosso Catálogo de Produtos</h2>
+            <p class="lead text-body-secondary mx-auto" style="max-width: 600px;">
+              Confira nossa seleção especial de itens essenciais com os melhores preços do mercado.
+            </p>
+            <hr class="w-25 mx-auto border-warning border-3 opacity-100">
+          </div>
+
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+
+            <div class="col">
+              <div class="card h-100 border-0 shadow-sm rounded-3">
+                <div class="position-relative">
+                  <span class="badge bg-danger position-absolute top-0 start-0 m-3 fs-6">Mais Vendido</span>
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQETo91vnzPOe6rI4YbSxaKlaSzuWivHW3Yb3Dzq4IIsw&s=10" class="card-img-top" alt="Arroz Tipo 1" onerror="this.src='https://placehold.co/600x400/16a34a/ffffff?text=Arroz+5kg'">
+                </div>
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold">Arroz branco 5kg</h5>
+                  <p class="card-text text-body-secondary small flex-grow-1">
+                    Arroz branco de grãos nobres, soltinho e selecionado. Ideal para as refeições diárias da sua família.
+                  </p>
+                  <div class="pt-3 border-top mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-body-secondary text-decoration-line-through small">R$ 29,90</span>
+                      <span class="fw-bold text-success fs-4">R$ 26,90</span>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100 fw-bold btn-buy" data-product="Arroz Tipo 1 Camil 5kg" data-price="26.90">
+                      <i class="bi bi-cart-plus me-1"></i> Comprar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card h-100 border-0 shadow-sm rounded-3">
+                <div class="position-relative">
+                  <span class="badge bg-success position-absolute top-0 start-0 m-3 fs-6">Oferta</span>
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFNYMFVIORcnGc-wFa2HO5xViqmAL3UFm7KCT6ptv4oA&s=10" class="card-img-top" alt="Feijão marrom" onerror="this.src='https://placehold.co/600x400/16a34a/ffffff?text=Feijao+1kg'">
+                </div>
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold">Feijão marrom 1kg</h5>
+                  <p class="card-text text-body-secondary small flex-grow-1">
+                    Feijão novo de cozimento rápido, produz um caldo grosso, rico em ferro e muito saboroso.
+                  </p>
+                  <div class="pt-3 border-top mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-body-secondary text-decoration-line-through small">R$ 9,20</span>
+                      <span class="fw-bold text-success fs-4">R$ 7,49</span>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100 fw-bold btn-buy" data-product="Feijão marrom 1kg" data-price="7.49">
+                      <i class="bi bi-cart-plus me-1"></i> Comprar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card h-100 border-0 shadow-sm rounded-3">
+                <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Óleo de Soja" onerror="this.src='https://placehold.co/600x400/16a34a/ffffff?text=Oleo+de+Soja'">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold">Óleo de Soja 900ml</h5>
+                  <p class="card-text text-body-secondary small flex-grow-1">
+                    Óleo vegetal 100% refinado, de alta qualidade, fonte de ômega 3 e 6 para suas receitas.
+                  </p>
+                  <div class="pt-3 border-top mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-body-secondary text-decoration-line-through small">R$ 7,90</span>
+                      <span class="fw-bold text-success fs-4">R$ 6,89</span>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100 fw-bold btn-buy" data-product="Óleo de Soja Liza 900ml" data-price="6.89">
+                      <i class="bi bi-cart-plus me-1"></i> Comprar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card h-100 border-0 shadow-sm rounded-3">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWZsqftK1nY7Mg0gqOB7I9IXnnbqsi0i5LzUSQb3SEAg&s=10" class="card-img-top" alt="Açúcar Refinado" onerror="this.src='https://placehold.co/600x400/16a34a/ffffff?text=Acucar+1kg'">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold">Açúcar Refinado  1kg</h5>
+                  <p class="card-text text-body-secondary small flex-grow-1">
+                    Açúcar extrafino de rápida dissolução, perfeito para adoçar bebidas, bolos e sobremesas.
+                  </p>
+                  <div class="pt-3 border-top mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-body-secondary text-decoration-line-through small">R$ 5,20</span>
+                      <span class="fw-bold text-success fs-4">R$ 4,50</span>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100 fw-bold btn-buy" data-product="Açúcar Refinado União 1kg" data-price="4.50">
+                      <i class="bi bi-cart-plus me-1"></i> Comprar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card h-100 border-0 shadow-sm rounded-3">
+                <div class="position-relative">
+                  <span class="badge bg-primary position-absolute top-0 start-0 m-3 fs-6">Destaque</span>
+                  <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Café Torrado" onerror="this.src='https://placehold.co/600x400/16a34a/ffffff?text=Cafe+Pilao'">
+                </div>
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold">Café Torrado preto 500g</h5>
+                  <p class="card-text text-body-secondary small flex-grow-1">
+                    Café forte e encorpado com torra acentuada e aroma marcante para despertar o seu dia.
+                  </p>
+                  <div class="pt-3 border-top mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-body-secondary text-decoration-line-through small">R$ 21,90</span>
+                      <span class="fw-bold text-success fs-4">R$ 18,50</span>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100 fw-bold btn-buy" data-product="Café Torrado preto 500g" data-price="18.50">
+                      <i class="bi bi-cart-plus me-1"></i> Comprar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card h-100 border-0 shadow-sm rounded-3">
+                <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Leite Integral" onerror="this.src='https://placehold.co/600x400/16a34a/ffffff?text=Leite+integral+1L'">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title fw-bold">Leite Integral 1L</h5>
+                  <p class="card-text text-body-secondary small flex-grow-1">
+                    Leite UHT integral puríssimo, rico em cálcio e enriquecido com vitaminas essenciais.
+                  </p>
+                  <div class="pt-3 border-top mt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="text-body-secondary text-decoration-line-through small">R$ 5,49</span>
+                      <span class="fw-bold text-success fs-4">R$ 4,79</span>
+                    </div>
+                    <button type="button" class="btn btn-warning w-100 fw-bold btn-buy" data-product="Leite Integral 1L" data-price="4.79">
+                      <i class="bi bi-cart-plus me-1"></i> Comprar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="contato" class="py-5">
+        <div class="container">
+          
+          <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-body-emphasis">Fale Conosco</h2>
+            <p class="lead text-body-secondary mx-auto" style="max-width: 600px;">
+              Dúvidas, sugestões ou elogios? Envie sua mensagem e nossa equipe responderá em breve.
+            </p>
+            <hr class="w-25 mx-auto border-warning border-3 opacity-100">
+          </div>
+
+          <div class="row g-4 justify-content-center">
+            
+            <div class="col-lg-7">
+              <div class="card border-0 shadow-sm p-4 rounded-4 bg-body">
+                <form id="contactForm">
+                  <div class="row g-3">
+                    
+                    <div class="col-md-6">
+                      <label for="nome" class="form-label fw-semibold">Nome Completo</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="nome" placeholder="Seu nome" required>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="email" class="form-label fw-semibold">E-mail</label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" class="form-control" id="email" placeholder="seuemail@exemplo.com" required>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="assunto" class="form-label fw-semibold">Assunto</label>
+                      <select class="form-select" id="assunto" required>
+                        <option value="" selected disabled>Selecione um assunto...</option>
+                        <option value="duvida">Dúvida sobre produtos</option>
+                        <option value="pedidos">Status de Pedido</option>
+                        <option value="sugestao">Elogios ou Sugestões</option>
+                        <option value="outros">Outros assuntos</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="mensagem" class="form-label fw-semibold">Mensagem</label>
+                      <textarea class="form-control" id="mensagem" rows="5" placeholder="Escreva sua mensagem aqui..." required></textarea>
+                    </div>
+
+                    <div class="col-12 text-end">
+                      <button type="submit" class="btn btn-warning btn-lg fw-bold px-4">
+                        <i class="bi bi-send-fill me-1"></i> Enviar Mensagem
+                      </button>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="card border-0 shadow-sm p-4 rounded-4 bg-dark text-white h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h4 class="fw-bold text-warning mb-4">Informações da Loja</h4>
+                  
+                  <div class="d-flex align-items-start mb-3">
+                    <i class="bi bi-geo-alt-fill text-warning fs-4 me-3"></i>
+                    <div>
+                      <h6 class="fw-bold mb-0">Endereço</h6>
+                      <small class="text-light">Av. Principal da tate, 127 - Centro</small>
+                    </div>
+                  </div>
+
+                  <div class="d-flex align-items-start mb-3">
+                    <i class="bi bi-telephone-fill text-warning fs-4 me-3"></i>
+                    <div>
+                      <h6 class="fw-bold mb-0">Atendimento</h6>
+                      <small class="text-light">(11) 4002-8922 / (11) 9994-8317</small>
+                    </div>
+                  </div>
+
+                  <div class="d-flex align-items-start mb-3">
+                    <i class="bi bi-clock-fill text-warning fs-4 me-3"></i>
+                    <div>
+                      <h6 class="fw-bold mb-0">Horário de Funcionamento</h6>
+                      <small class="text-light">Seg - Sáb: 08h00 às 22h00<br>Dom e Feriados: 08h00 às 16h00</small>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-4 border-top border-secondary">
+                  <h6 class="fw-bold text-warning mb-3">Siga o Mercado H</h6>
+                  <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-outline-light rounded-circle"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="btn btn-outline-light rounded-circle"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="btn btn-outline-light rounded-circle"><i class="bi bi-whatsapp"></i></a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="rodape" class="bg-dark text-white pt-5 pb-4 border-top border-warning">
+      <div class="container">
+        <div class="row g-4">
+          
+          <div class="col-lg-4 col-md-6">
+            <h5 class="fw-bold text-warning mb-3">
+              <i class="bi bi-cart3 me-1"></i> Mercado H
+            </h5>
+            <p class="text-body-secondary small">
+              Sua melhor opção em supermercado online. Qualidade, facilidade de compra e preços imbatíveis entregues diretamente no seu lar.
+            </p>
+          </div>
+
+          <div class="col-lg-2 col-md-6">
+            <h6 class="fw-bold text-white mb-3">Links Rápidos</h6>
+            <ul class="list-unstyled text-small">
+              <li class="mb-2"><a href="#inicio" class="text-body-secondary text-decoration-none">Início</a></li>
+              <li class="mb-2"><a href="#produtos" class="text-body-secondary text-decoration-none">Produtos</a></li>
+              <li class="mb-2"><a href="#contato" class="text-body-secondary text-decoration-none">Contato</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <h6 class="fw-bold text-white mb-3">Formas de Pagamento</h6>
+            <div class="d-flex gap-2 fs-3 text-warning">
+              <i class="bi bi-credit-card-2-back"></i>
+              <i class="bi bi-qr-code"></i>
+              <i class="bi bi-cash-coin"></i>
+              <i class="bi bi-bank"></i>
+            </div>
+            <small class="text-body-secondary d-block mt-2">Aceitamos Pix, Cartões de Crédito e Débito.</small>
+          </div>
+
+          <div class="col-lg-3 col-md-6 text-lg-end">
+            <a href="#inicio" class="btn btn-outline-warning btn-sm fw-bold">
+              <i class="bi bi-arrow-up-circle me-1"></i> Voltar ao topo
+            </a>
+          </div>
+
+        </div>
+
+        <hr class="my-4 border-secondary">
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center text-body-secondary small">
+          <p class="mb-0">&copy; 2026 Mercado H - Todos os direitos reservados.</p>
+          <p class="mb-0">Desenvolvido com Bootstrap 5.3 CDN</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-dark text-white">
+            <h5 class="modal-title fw-bold" id="cartModalLabel">
+              <i class="bi bi-cart3 me-2 text-warning"></i>Seu Carrinho de Compras
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <ul id="cartItemList" class="list-group list-group-flush mb-3">
+              <li class="list-group-item text-center text-muted py-4">Seu carrinho está vazio no momento.</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center fw-bold fs-5 pt-3 border-top">
+              <span>Total:</span>
+              <span id="cartTotal" class="text-success">R$ 0,00</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Continuar Comprando</button>
+            <button type="button" class="btn btn-success fw-bold" id="btnCheckout" disabled>Finalizar Compra</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+      <button class="btn btn-warning py-2 dropdown-toggle d-flex align-items-center rounded-circle border shadow" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Alternar tema">
+        <i class="bi bi-circle-half fs-5"></i>
+        <span class="visually-hidden" id="bd-theme-text">Alternar Tema</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+            <i class="bi bi-sun-fill me-2 text-warning"></i> Claro
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+            <i class="bi bi-moon-stars-fill me-2 text-primary"></i> Escuro
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto">
+            <i class="bi bi-circle-half me-2 opacity-50"></i> Automático
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 start-0 p-3">
+      <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill fs-5"></i>
+            <span id="toastMessage">Item adicionado com sucesso!</span>
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        let cart = [];
+        const cartBadge = document.getElementById('cartBadge');
+        const cartItemList = document.getElementById('cartItemList');
+        const cartTotal = document.getElementById('cartTotal');
+        const btnCheckout = document.getElementById('btnCheckout');
+        const toastEl = document.getElementById('liveToast');
+        const toastMessage = document.getElementById('toastMessage');
+        const bsToast = new bootstrap.Toast(toastEl);
+
+        document.querySelectorAll('.btn-buy').forEach(button => {
+          button.addEventListener('click', (e) => {
+            const name = e.target.closest('.btn-buy').getAttribute('data-product');
+            const price = parseFloat(e.target.closest('.btn-buy').getAttribute('data-price'));
+
+            cart.push({ name, price });
+            updateCart();
+
+            toastMessage.textContent = `"${name}" foi adicionado ao carrinho!`;
+            bsToast.show();
+          });
+        });
+
+        function updateCart() {
+          cartBadge.textContent = cart.length;
+
+          if (cart.length === 0) {
+            cartItemList.innerHTML = '<li class="list-group-item text-center text-muted py-4">Seu carrinho está vazio no momento.</li>';
+            cartTotal.textContent = 'R$ 0,00';
+            btnCheckout.disabled = true;
+            return;
+          }
+
+          cartItemList.innerHTML = '';
+          let total = 0;
+
+          cart.forEach((item, index) => {
+            total += item.price;
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `
+              <div>
+                <span class="fw-semibold">${item.name}</span>
+                <br><small class="text-success">R$ ${item.price.toFixed(2).replace('.', ',')}</small>
+              </div>
+              <button class="btn btn-outline-danger btn-sm border-0" onclick="removeItem(${index})">
+                <i class="bi bi-trash"></i>
+              </button>
+            `;
+            cartItemList.appendChild(li);
+          });
+
+          cartTotal.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+          btnCheckout.disabled = false;
+        }
+
+        window.removeItem = (index) => {
+          cart.splice(index, 1);
+          updateCart();
+        };
+
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const nome = document.getElementById('nome').value;
+          
+          toastMessage.textContent = `Obrigado ${nome}! Sua mensagem foi enviada com sucesso.`;
+          bsToast.show();
+          contactForm.reset();
+        });
+
+        btnCheckout.addEventListener('click', () => {
+          toastMessage.textContent = 'Compra realizada com sucesso! Obrigado por comprar no Mercado H.';
+          bsToast.show();
+          cart = [];
+          updateCart();
+          const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+          cartModal.hide();
+        });
+      });
+    </script>
+  </body>
+</html>
